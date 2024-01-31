@@ -2,18 +2,28 @@
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 #include <DHT_U.h>
+#include <WiFi.h>
+#include <WiFiClient.h>
+
+
+#define BLYNK_TEMPLATE_ID "TMPL5PWhkRhOt"
+#define BLYNK_TEMPLATE_NAME "Blynk"
+#define BLYNK_AUTH_TOKEN "etrlypNQTR4N0HJHz5UY38gq12XvRBXP"
+
+#include <BlynkSimpleEsp32.h>
+
 
 // Define the pins that we will use
 #define SENSOR 33
 #define LED 26
 #define DHTTYPE DHT11
+#define BLYNK_PRINT Serial
 
 DHT_Unified dht(SENSOR, DHTTYPE);
 
-// WiFi credentials go here
-// ...
-// ...
-// ...
+char ssid[] = "iPhone de angelo";
+char pass[] = "angelooo";
+
 
 void setup() {
   // Setup pins
@@ -24,11 +34,9 @@ void setup() {
   Serial.begin(9600);
   delay(100);
 
-  // begin the Blynk session
-  // ...
-  // ...
-  // ...
-
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+  Blynk.run();
+  Serial.println(">COUCOUUUUuu");
   // Start listening to the DHT11
   dht.begin();
 
@@ -59,9 +67,11 @@ void setup() {
   }
 
   // Send data to Blynk
-  // ...
-  // ...
-  // ...
+  //HUMIDITE
+  Blynk.virtualWrite(0,event.relative_humidity);
+  //TEMPERATURE
+  Blynk.virtualWrite(1,event.temperature);
+ 
 
   Serial.println("Going to sleep for 5 seconds...");
   delay(100);
@@ -69,5 +79,5 @@ void setup() {
 }
 
 void loop() {
-  // Not needed anymore, the function is kept so PlatformIO does not complain.
+  
 }
